@@ -5,7 +5,7 @@ apt update
 apt install -y screen vim git-lfs
 
 # Install common libraries
-pip install -q requests accelerate sentencepiece pytablewriter
+pip install -q requests accelerate sentencepiece pytablewriter protobuf
 
 export DEBUG="True"
 export MODEL="Open-Orca/Mistral-7B-OpenOrca"
@@ -23,7 +23,7 @@ cd lm-evaluation-harness
 pip install -e .
 
 benchmark="agieval"
-python3 main.py \
+python main.py \
     --model hf-causal \
     --model_args pretrained=$MODEL \
     --tasks agieval_aqua_rat,agieval_logiqa_en,agieval_lsat_ar,agieval_lsat_lr,agieval_lsat_rc,agieval_sat_en,agieval_sat_en_without_passage,agieval_sat_math \
@@ -32,7 +32,7 @@ python3 main.py \
     --output_path ../${benchmark}.json
 
 benchmark="gpt4all"
-python3 main.py \
+python main.py \
     --model hf-causal \
     --model_args pretrained=$MODEL \
     --tasks hellaswag,openbookqa,winogrande,arc_easy,arc_challenge,boolq,piqa \
@@ -41,7 +41,7 @@ python3 main.py \
     --output_path ../${benchmark}.json
 
 benchmark="truthfulqa"
-python3 main.py \
+python main.py \
     --model hf-causal \
     --model_args pretrained=$MODEL \
     --tasks truthfulqa_mc \
@@ -50,7 +50,7 @@ python3 main.py \
     --output_path ../${benchmark}.json
 
 benchmark="bigbench"
-python3 main.py \
+python main.py \
     --model hf-causal \
     --model_args pretrained=$MODEL \
     --tasks bigbench_causal_judgement,bigbench_date_understanding,bigbench_disambiguation_qa,bigbench_geometric_shapes,bigbench_logical_deduction_five_objects,bigbench_logical_deduction_seven_objects,bigbench_logical_deduction_three_objects,bigbench_movie_recommendation,bigbench_navigate,bigbench_reasoning_about_colored_objects,bigbench_ruin_names,bigbench_salient_translation_error_detection,bigbench_snarks,bigbench_sports_understanding,bigbench_temporal_sequences,bigbench_tracking_shuffled_objects_five_objects,bigbench_tracking_shuffled_objects_seven_objects,bigbench_tracking_shuffled_objects_three_objects \
@@ -59,7 +59,7 @@ python3 main.py \
     --output_path ../${benchmark}.json
 
 cd ../..
-python3 main_custom.py "$BENCHMARK"
+python main_custom.py "$BENCHMARK"
 
 # OpenLLM
 export BENCHMARK="openllm"
@@ -120,4 +120,4 @@ lm_eval --model vllm \
     --output_path ../${benchmark}.json
 
 cd ../..
-python3 main_custom.py "$BENCHMARK"
+python main_custom.py "$BENCHMARK"
